@@ -1,0 +1,16 @@
+# Local .terraform directory (provider plugins and binaries)
+**/.terraform/*
+
+# State files (contains unencrypted secrets and infrastructure data)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Plan files and crash logs
+crash.log
+crash.*.log
+*.tfplan
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
