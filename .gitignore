@@ -10,6 +10,7 @@
 crash.log
 crash.*.log
 *.tfplan
+tfplan
 
 # Sensitive variable files
 *.tfvars
