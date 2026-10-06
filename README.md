@@ -25,3 +25,16 @@ Hands-on infrastructure automation and security labs following HashiCorp Terrafo
 * Defined explicit version constraints using the pessimistic constraint operator (~> 5.0) to prevent breaking API drift across major provider releases.
 * Executed dependency upgrades via terraform init -upgrade to resolve and bind the latest compliant release (v5.100.0).
 * Enforced Git tracking of .terraform.lock.hcl to validate cryptographic provider hashes and guarantee deterministic execution across CI/CD environments.
+
+### 05. Security Groups & Rule Decoupling (`05-firewall-provision`)
+
+Demonstrates provisioning AWS Security Groups and attaching discrete ingress/egress rules using modern standalone rule resources (`aws_vpc_security_group_ingress_rule` and `aws_vpc_security_group_egress_rule`).
+
+#### Key Architecture & IaC Concepts
+* **Rule Decoupling:** Uses standalone rule resources instead of inline security group rule blocks, preventing circular dependencies and state drift when managing complex rule sets across multiple teams.
+* **Dynamic Data Source Lookup:** Utilizes `data.aws_security_group.default` to query existing VPC infrastructure at runtime, eliminating brittle hardcoded resource IDs (`sg-...`) and keeping configurations fully portable across AWS accounts.
+* **Resource Referencing (HCL2):** Dynamically binds egress rules directly to the managed security group resource (`aws_security_group.allow_tls.id`) to ensure correct resource graph creation ordering.
+
+#### Verification & State Management
+* Verified provider execution in `us-east-1`.
+* Validated dynamic security group resolution and lifecycle replacement via `terraform plan` and `terraform apply`.
