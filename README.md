@@ -6,15 +6,16 @@ Hands-on infrastructure automation and security labs following HashiCorp Terrafo
 
 ## 📂 Lab Index & Navigation
 
-| Module | Focus Area |
-| :--- | :--- |
-| [**01. EC2 Provisioning**](./01-ec2-provisioning) | AWS compute lifecycle & baseline HCL deployment |
-| [**02. GitHub Provider**](./02-github-provider) | API resource management & Zero Trust credential injection |
-| [**03. IAM User**](./03-iam-user) | Least-privilege identity & access policies |
-| [**04. Provider Versioning**](./04-provider-versioning) | Pessimistic constraint pinning (`~>`) & dependency lockfiles |
-| [**05. Security Groups & Rule Decoupling**](./05-firewall-provision) | Standalone rule resources & dynamic data lookups |
-| [**06. Elastic IP Creation**](./06-elastic-ip-creation) | VPC-scoped static IPs & configuration drift remediation |
+| Module                                                                  | Focus Area                                                       |
+| :---------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| [**01. EC2 Provisioning**](./01-ec2-provisioning)                       | AWS compute lifecycle & baseline HCL deployment                  |
+| [**02. GitHub Provider**](./02-github-provider)                         | API resource management & Zero Trust credential injection        |
+| [**03. IAM User**](./03-iam-user)                                       | Least-privilege identity & access policies                       |
+| [**04. Provider Versioning**](./04-provider-versioning)                 | Pessimistic constraint pinning (`~>`) & dependency lockfiles     |
+| [**05. Security Groups & Rule Decoupling**](./05-firewall-provision)    | Standalone rule resources & dynamic data lookups                 |
+| [**06. Elastic IP Creation**](./06-elastic-ip-creation)                 | VPC-scoped static IPs & configuration drift remediation          |
 | [**07. Attribute Referencing & Data Sources**](./07-attribute-creation) | Implicit dependencies, dynamic AMI lookups, & attribute tracking |
+| [**08. Cross Reference Attributes**](./08-cross-reference-attributes)   | Dynamic security group rule bindings & dependency mapping        |
 
 ---
 
@@ -59,3 +60,8 @@ Demonstrates provisioning AWS Security Groups and attaching discrete ingress/egr
 * Replaced brittle hardcoded AMI IDs with dynamic `data.aws_ami` blocks to continuously query the AWS API for the latest patched Amazon Linux 2023 images.
 * Enforced **Implicit Dependencies** within the Terraform dependency graph by passing the EC2 instance ID directly into the Elastic IP allocation block (`instance = aws_instance.web_server.id`).
 * Validated execution ordering where Terraform automatically mapped out the required build sequence without relying on explicit `depends_on` flags.
+
+### [08. Cross Reference Attributes](./08-cross-reference-attributes)
+* Demonstrated dynamic resource linking by passing an Elastic IP attribute (`public_ip`) directly into a Security Group ingress rule.
+* Utilized HCL string interpolation (`"${aws_eip.lb.public_ip}/32"`) to dynamically construct valid CIDR blocks at runtime, preventing the need to hardcode network addresses.
+* Reinforced the Terraform dependency graph by mapping implicit dependencies; the security group rule automatically waits for the EIP allocation to complete before provisioning.
