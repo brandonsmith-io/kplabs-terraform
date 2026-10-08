@@ -1,0 +1,12 @@
+formatter: "markdown table"
+
+output:
+  file: "README.md"
+  mode: replace
+
+settings:
+  hide:
+    - requirements
+    - modules
+    - inputs
+    - outputs
