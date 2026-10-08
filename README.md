@@ -14,6 +14,7 @@ Hands-on infrastructure automation and security labs following HashiCorp Terrafo
 | [**04. Provider Versioning**](./04-provider-versioning) | Pessimistic constraint pinning (`~>`) & dependency lockfiles |
 | [**05. Security Groups & Rule Decoupling**](./05-firewall-provision) | Standalone rule resources & dynamic data lookups |
 | [**06. Elastic IP Creation**](./06-elastic-ip-creation) | VPC-scoped static IPs & configuration drift remediation |
+| [**07. Attribute Referencing & Data Sources**](./07-attribute-creation) | Implicit dependencies, dynamic AMI lookups, & attribute tracking |
 
 ---
 
@@ -53,3 +54,8 @@ Demonstrates provisioning AWS Security Groups and attaching discrete ingress/egr
 * Declared and provisioned an AWS Elastic IP (`aws_eip`) allocated for VPC domain scope.
 * Managed teardown reconciliation via `terraform destroy` and diagnosed zero-object destruction caused by out-of-band console releases (configuration drift).
 * Automated interface documentation generation using `terraform-docs` to track provider bindings and managed resource types.
+
+### [07. Attribute Referencing & Data Sources](./07-attribute-creation)
+* Replaced brittle hardcoded AMI IDs with dynamic `data.aws_ami` blocks to continuously query the AWS API for the latest patched Amazon Linux 2023 images.
+* Enforced **Implicit Dependencies** within the Terraform dependency graph by passing the EC2 instance ID directly into the Elastic IP allocation block (`instance = aws_instance.web_server.id`).
+* Validated execution ordering where Terraform automatically mapped out the required build sequence without relying on explicit `depends_on` flags.
